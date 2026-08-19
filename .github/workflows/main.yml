@@ -1,0 +1,65 @@
+name: Build Windows EXE
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+    paths:
+      - 'VIS_Workflow_Benchmark.py'
+      - 'requirements-build.txt'
+      - 'README_USB.txt'
+      - 'POWER_BI_DATA_DICTIONARY.csv'
+      - '.github/workflows/build-windows-exe.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build portable Windows app
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+          cache: 'pip'
+          cache-dependency-path: requirements-build.txt
+
+      - name: Install build dependencies
+        shell: pwsh
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements-build.txt
+
+      - name: Build standalone EXE
+        shell: pwsh
+        run: |
+          python -m PyInstaller `
+            --noconfirm `
+            --clean `
+            --onefile `
+            --windowed `
+            --name "VIS Workflow Benchmark" `
+            --collect-all reportlab `
+            VIS_Workflow_Benchmark.py
+
+      - name: Assemble USB-ready folder
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path "USB_READY\VIS Workflow Benchmark\Results" | Out-Null
+          Copy-Item "dist\VIS Workflow Benchmark.exe" "USB_READY\VIS Workflow Benchmark\VIS Workflow Benchmark.exe"
+          Copy-Item "README_USB.txt" "USB_READY\VIS Workflow Benchmark\README.txt"
+          Copy-Item "POWER_BI_DATA_DICTIONARY.csv" "USB_READY\VIS Workflow Benchmark\POWER_BI_DATA_DICTIONARY.csv"
+
+      - name: Upload Windows app
+        uses: actions/upload-artifact@v4
+        with:
+          name: VIS-Workflow-Benchmark-Windows
+          path: USB_READY/VIS Workflow Benchmark/
+          if-no-files-found: error
+          retention-days: 30
