@@ -1,0 +1,28 @@
+Field,Meaning,Unit/Type
+Test_ID,Unique benchmark run identifier,text
+Pair_ID,Links comparable runs such as manual and automated,text
+Timestamp,Run save timestamp,ISO datetime
+Task,Creative workflow being benchmarked,text
+Method,Existing/manual/plugin method,text
+Tool_Version,Workflow or plugin version,text
+Tester,Optional operator label,text
+Department,Department/team,text
+Total_Time_sec,Whole task duration,seconds
+Active_Time_sec,Interaction time after assessment and software wait are separated,seconds
+Inactive_Assessment_sec,No-input task time above the 3 second threshold,seconds
+Software_Wait_sec,Explicitly marked software processing/wait time,seconds
+Clicks_Total,Total left/right/middle click count,count
+Clicks_Left,Left mouse clicks,count
+Clicks_Right,Right mouse clicks,count
+Clicks_Middle,Middle mouse clicks,count
+Scroll_Events,Mouse wheel events,count
+Keystrokes,Number of key-down events; actual characters are never stored,count
+Input_Events,Raw click/scroll/key interaction events,count
+Action_Markers,Meaningful workflow operations explicitly marked by tester,count
+Decision_Markers,Genuine judgement/choice points explicitly marked by tester,count
+Undo_Shortcuts,Ctrl+Z events used as a rework proxy,count
+Mouse_Travel_px,Cursor travel distance,pixels
+Frequency_Per_Month,Estimated task frequency per month,number
+Users_Affected,Number of users who perform/benefit from workflow,number
+Notes,Optional benchmark notes,text
+Recorder_Version,Recorder build version,text
