@@ -514,3 +514,4 @@ if __name__=='__main__':
         threading.Thread(target=hook_thread,daemon=True).start()
         threading.Thread(target=mouse_distance_thread,daemon=True).start()
     build_gui().mainloop()
+
